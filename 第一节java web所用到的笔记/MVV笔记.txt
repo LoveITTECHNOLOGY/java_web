@@ -1,0 +1,86 @@
+04.15
+利用MvC模式进行分层设计
+跟据程序的功能，将程序的结构进行分工，分成控制器，模式，视图三个部分
+控制器接受客户的输入（请求），按照业务处理数据，
+调用不同的model来完成数据的存取，将数据交给视图来显示。
+通过分层设计，可以极大的在需求变化后，减少代码的修改
+1Servlet的使用
+   在java web中，一般使用Servelet作为控制器来接受客户地请求
+（1）定义类 继承HttpServlet
+  (2)重写里面地doGet或者doPost方法
+  (3)将Servlet映射成一个url地址供客户访问
+2.model(模式）的使用
+  (1)不同的数据，定义专门的数据操作类(Data:Data Access Object)来实现数据的(增，删，改，否)操作
+(2)不同的数据，定义专门的实体类(Pojo)来进行描述，实体类的属性，和数据库表的字段对应
+将数据从数据库读出后，转换成实体类对象，断开与数据库的连接，实体类对象可以在表示进行展示。
+3.jsp显示页面，利用jstl标签来显示数据
+
+04.16jstl标签库
+利用jstl标签库，将在jsp页面上的动态代码<% %>
+去掉，利用标签的方式对数据进行展示。
+
+04。20
+对于采用MVc模式进行编程的时候，如果·视图文件(jsp)需要动态数据的显示（数据是由控制器分发过来）的时候，
+在设置跳转的时候，一定不能之间访问jsp页面，而必须经过控制器来分发(超链的地址，必须是servlet(对应的url)
+对于系统中每一种信息，都涉及到（增加，删除，修改，查询，四种操作，没有必要为每种操作都定义一个Servlet而是共有一个
+servlet通过转递不同的参数action来调用不同的方法。
+04.22综合使用Servlet mvc +jstl+jquery ajax 实现完整的操作
+流程 :用户点击“加入购物车" -->CartServlet
+;加入商品购物车中-->mycart.jsp
+04.26
+ javaweb编程之高级技术--SSM框架篇
+SSM:Spring+SpringMVC+Mybatis
+
+1MVC菜鸟模式入门 jsp+servlet+javabean
+2 java web 中级:jsp+spring+springmvc+mybatis
+SpringMvc:提供比servlet更方面的访问控制，可以将某个url映射到猫哥控制类（controller)的某个方法。
+mybatis:提供实体对象，和数据库记录的转换，只需要进行简单的配置，在程序中不需要编写任何繁琐的代码就能实现将
+实体对象保存到数据库中，作为一条记录，页可以将数据库记录转换为实体记录。
+1SpringMVC的使用
+1将ssm所需要的jar包拷贝到项目的web-inf/lib下
+2将SpringMVC所需要的运行主配置文件springmvc.xml拷贝到项目中-放到包config.springmvc
+修改项目的web-info/web.xml
+配置浏览器对本项目的所有的url的访问独有Springmvc接管（作为SprinMVC的主控制器·)
+4编写自定义的控制器(controller)类--映射某个url
+（1）创建包cn.jju.b1833.controller
+(2)定义User实体相关操作的UserController
+(3)定义User实体类，放到cn.jju.b183.pojo
+(4)在springmvc中注册编写的Controller
+04.27
+mybatis实现“实体对象"与"数据库记录”的转换，简化代码的编写
+1。定义UserDao
+new interface
+2.创建UerDao的mybatis映射文件UserDao.xml
+3.0创建mybatis得主配置文件mybati-config.xml
+4在mybatis-config.xml里面，注册UserDao
+04.28  
+     SpringMVC对表单数据的处理，将表单中的数据，自动转换为实体对象，保证表单各输入框的name属性和实体的变量名一致
+中文乱码
+   （1）修改web.xml提交到UserController中
+在项目的web.xml，中增加 <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+
+   （2）修改mybatis配置文件中的连接串
+ <property name="url" value="jdbc:mysql://localhost:3306/eshop?characterEncoding=UTF-8&amp;useUnicode=true" />
+
+
+
+
+
+
