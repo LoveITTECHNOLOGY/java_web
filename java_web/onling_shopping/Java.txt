@@ -1,0 +1,902 @@
+9.19
+	Java 图形用户界面编程
+	Java提供一套完整的图形用户接口类 ——Swing 来构建窗口应用程序
+ 1，窗口类——JFrame
+ 	主要属性：
+ 			title：标题
+ 			size：大小(必须设置)
+ 	主要方法：
+ 			setXXX() ：对各种属性的设置
+ 			setLayout(): 设置界面布局
+ 			setTitle():设置标题
+ 			setSize():设置窗口大小
+ 			setVisiable():窗口是否可见  false不可见  true可见
+ 			setResizable()： 界面是否可被修改
+ 			add(): 将窗口元素添加进窗口
+  补充知识点：
+  			构造方法：	
+  					在创建对象的时候，按照要求，进行属性的初始化 
+  					new 构造方法();
+  					构造方法与类同名，没有返回值的声明，是new一个对象的时候自动调用的方法
+ 			
+ 			可以定义多个不同形式的构造方法——重载
+ 			
+ 			
+ 2.按钮类 JButton
+    标签类JLable
+    单行文本框类JTextField
+    密码文本框类JPasswordField
+	
+ 3.布局方式
+ 	设置界面元素在界面是的排列方式
+ 	(1)边框布局——BorderLayout：
+ 			将界面分成 东 西 南 北 中 五个部分，每个部分只能直接放一个界面元素，
+ 			如果不指明位置，默认放在中间位置。不指明布局格式   jFrame 默认采用该布局			
+ 	
+ 	(2)流式布局——FlowLayout
+ 			按照加入的先后顺序，从左到右，从上到下，如果一行放不下就放到下一行。
+ 	
+ 	(3)网格布局——GridLayout
+ 			将整个布局，分成n*m个格子
+ 	
+ 	(4)
+ 	
+ 4.综合运行多个布局方式  以及 中间容器 JPanel 来实现复杂界面
+ 	中间容器JPanel：可以在里面放置其他界面元素的容器
+ 				 默认采用的布局是——流式布局 	
+
+9.20
+	GUI程序对界面操作的相应——事件处理机制
+	1.基本概念
+		事件源：发生某个事件的界面元素
+		事件类型：在某个界面元素上发生的某个操作种类
+		事件监视器：对事件源上某个特定事件类型进行的监听，进行处理
+	
+	2.	流程
+	(1)定义事件监视器类：声明可以监视的事件,定义该事件的处理方法。
+	(2)创建监视器对象
+	(3)给事件源 设置 对某个事件进行监视的监视器对象
+	
+	当监视器所监视的事件发生了对应的事件后，系统会自动调用监视器类所定义的处理
+	方法，将具体的事件信息ActionEvent(事件源等)传递给处理方法
+	
+	补充知识点：
+	 		变量可访问的范围：离他最近的花括号位置
+	 		
+9.26 
+	字符串比较
+	String s1 = "wei";
+	String s2 = "wei";
+	 	System.out.println(s1 == s2);			false
+	 	System.out.println(s1.equals(s2));		true
+	 
+	验证码
+		(1)纯文字 (数字 字母 汉字)
+	 	(2)图片	
+	 	(3)逻辑内容 需要经过脑力运算		
+	
+9.27
+		GUI编程（续）扫雷游戏
+	1.埋雷
+			用户点击开始后，程序随机生成n个位置，作为放置雷的地方
+		程序定义：
+			(1)一个二维数组status[][]用于记录每个格子的状态
+				0——没有点开
+				1——被点开
+			(2)一个数组leiPos[]用于记录雷所在的位置
+						6,21,35,49,50
+		整个格子n*n，m个雷，雷的位置[0，n*n-1]随机产生一个，和
+		格子的位置[row，col]存在对应关系
+					row = x / n;  col = x % n;
+			(3)定义一个存放n*n个按钮的数组btns[]
+			当对应的位置被翻转，没有雷 则按钮的颜色变白色(默认为蓝色)
+			最后游戏结束 位置上有雷的按钮则变红
+ 	
+ 	定义方法createLei():随机生成M个雷的位置，必须各不相同
+ 	
+ 10.10
+ 	采用递归的方法进行扫雷  要判断改位置有没有被扫过
+ 			
+10.11
+    多线程
+      程序在某些时候，需要实现多个功能同时运行（并行），而一般的程序
+      则是从上到下依次顺序执行  f1();f2();f2()必须等到f1()执行完毕才能开始执行
+ 	要实现多个功能f1(),f2()....同时执行，则需要将所需要的功能放到
+ 	一个继承于Thread类中的run()方法中执行
+	(1)定义一个继承与Thread类
+	   class f1 extends Thread{
+	     public void run(){
+		//xxxxxxx
+	  }
+	}
+ 	   class f2 extends Thread{
+	     public void run(){
+		//xxxxxxx
+	  }
+	}
+	(2)创建自定义的线程类对象
+	   F1 f1 = new F1();
+	   F2 f2 = new F2();
+	(3)调用线程对象的start()方法，启动线程
+            f1.start();
+            f2.start();
+	   调用start() 将线程对象挂接到操作的就绪队列中，等待操作系统的调度，
+	   轮到该线程对象执行的时候，则调用run方法
+
+	   操作系统的调度一般常见采用时间片轮转，给每个线程每次执行一个很短的CPU时间片
+	   ，如果在这个时间内，线程任务没有执行完，则该线程挂起，安排下一个线程执行。。。
+
+
+    实现案例：   生活中的一边。。。 一边....
+	  一边听音乐Listen  一边打游戏Play
+
+
+多线程综合项目：打字测试小程序
+
+10.25
+	用户输入字符后，按回车，进行得分的判断
+    文本输入框的按回车对应的事件ActionListener和按钮被点击是同一类事件
+
+   倒计时的实现
+     --定义倒计时线程类TimeThread
+    倒计时结束后，产生字符的线程停止，用户在输入框按回车无效
+    需要定义全局的变量isGameRunning
+      游戏开始，设置为true，当倒计时结束，设置为false
+      在产生字符的循环里面，判断该变量的值，如果为false，循环结束
+      在回车时间处理里面，判断该变量的值，如果为false，不做处理 		
+ 
+10.31	
+	1.输入框按键(keyboard)事件的处理
+ 	
+ 	2.多线程之间的联系
+ 		(1).互斥： 当多个线程在同时对某一个资源进行对鞋的时候，必须保证排他性
+ 		--"锁" 机制:
+		系统在线程访问资源的时候。则判断是否有其他线程在访问该资源(资源被加锁)，
+		如果有则必须等待。如果没有则将该资源加锁，进入相关代码，结束后，释放锁。
+		(2).同步
+				等待与唤醒
+				多个线程在运行的时候，当某个条件不满足的时候，线程A等待
+				当某个条件满足的时候，线程B唤醒A
+		案例：
+			两头熊(熊大与熊二)。一只蜜蜂，一个瓶子用于装蜂蜜
+			熊吃瓶子里的蜂蜜，蜜蜂加蜜到瓶子中 当瓶子里的蜂蜜超过1/3，熊开始吃蜂蜜。
+			否则等待，当瓶子里的蜜蜂少于1/2.蜜蜂开始加蜜，如果瓶子满了则等待，
+		
+		线程的互斥
+			利用锁的机制，设定对某个资源访问的临界区代码。确保只能有一个线程进入		
+			synchronized(资源){
+				//临界区
+				//对资源访问代码
+			}
+
+11.1
+	程序在运行过程中，产生的变量，当程序退出后，会被销毁掉在很多时候，程序需要将数据
+	永久保存，保存到文件中、在需要的时候，将数据从文件中读取出来
+						--I/O
+	I/O流详解		
+	https://blog.csdn.net/qq_20610631/article/details/81113794 		
+	https://blog.csdn.net/baobeisimple/article/details/1713797
+	
+11.7
+	1.字节流  InputStream  OutputStream
+			每次只能以字节单位来传输
+	2.字符流 xxxReader  xxxWriter
+		每次与字符为单位进行传输
+	(1)PrintWriter： 可以一次写一行数据
+	(2)BufferedReader:可以一次读一行数据
+
+	对读出的数据按照得分进行排序
+	(1)将文件中读出的数据，存放到数组中
+		int[] score = new int[？？];
+		
+	--》	动态数组： 动态数组的使用
+		定义的数组属于静态范围
+		(1)数组的大小必须事先固定
+		(2)数组中存放的数据类型不许是固定的
+		动态数组(ArrayList)动态数组；
+		(1)数组大小是可以变化的的，事先不需要指明数组的大小
+			调用add()加入元素
+		(2)数组中存放的类型可以不相同
+
+11.4 
+	复杂文件的读取与写入
+		在实际工中，文件中的一行注释往往包含多个内容（不仅仅是一个数字）
+		不同内容之间，用不同的符号进行分割（空格 逗号 分号 #号 。。。）		
+		在读取的时候，按特定的符号对每一行内容进行分割，
+		提出每一个部分对应的内容
+		--Java 提供一个字符串的split()给定的分隔符方法
+		String s = "魏启明#2019-11-02#30";
+		String[] ss =s.split("#");
+				ss[0] "魏启明"
+				ss[1] "2019-11-02"
+				ss[2] "30"
+		
+	定义一个单独的类来和文件每一行内容相对应
+		class score{
+			String name;
+			String dt;
+			int points;
+		}
+	定义一个动态数组，数组中的每一个元素都是Score类型的对象
+	当读取文件中的每一行的时候，创建一个Score对象，将解析出来
+	的每部分的内容赋值给该对象的相应属性
+	Score a = new Score();
+	a.name =ss[0];
+	a.dt = ss[1];
+	a.points = Integer.pareseInt(ss[2]);
+	
+	ArrayList： 线性结构 如果知道数据所在位置则可以通过get()方法快速找到
+	如果不知道则要通过遍历比较关键字来查找，当数据过大时效率非常低
+	
+	Java 提供一种可以根据关键字（Key）来快速定位数据的结构
+	Map --HashMap(哈希表);
+		数据存放的时候，根据提供的key，调用系统提供的哈希算法，
+		计算出位置(地址)，将数据存放在该位置
+		数据读取的时候，根据key快速找到数据存放的位置
+		
+11.21
+	动态数组 总结
+		List (ArrayList)/Map(HashMap)
+		共同点： 可以在运行过程中，动态调整里面的元素(增加/删除/修改)
+		不同点： List --线性结构(适合)
+						优点：可以根据位置序号快速读取数据
+						缺点：对于按照关键字来查找数据，需要遍历比较 速度慢
+			  Map --离散结构
+			  			优点：在存放数据的时候，根据key来确定存放位置，同时也可以根据key来快速查找数据
+			  			缺点：进行遍历的时候，需要先找到key，再来通过key来读取数据，速度慢
+			  			
+	List和 Map的综合使用案例		  			
+		WordCount： 统计一个文件中，汉字出现的次数
+		
+			思路： 用List<String>读取存放的文件的每一行内容
+			有Map<String,Integer>存放某个或者出现的次数
+					-用汉字做为key，用出现的次数作为Value
+		
+		substring(x); --截取字符串从x到末尾的字符串
+		substring(x,y); --截取字符串从x到y-1位置之间的子串
+		
+	List 中的元素可以是任何类型     Map中的Value也可以是任何类型
+	--> 定义List中的每个元素是Map类型
+	 		ArrayList<Map> data = new ArrayList<Map>();
+	--> 定义Map中的每个value是List类型
+			HashMap<Sting,List> data = new HashMap<Sting,List>();
+			
+	比如: 读取学生信息文件
+		1001#魏启明#男
+		1002#张珊#女
+				ArrayList<Map> data = new ArrayList<Map>();
+				HashMap<Sting,Sting> stu1 = new HashMap<Sting,Sting>();
+				stu1.put("sno","1001");
+				stu1.put("sname","魏启明");
+				stu1.put("gender","男");
+				data.add(stu1);
+	读取学生的成绩信息文件
+		1001#90,80,30,60
+		1002#80,70,50,80
+		--> 以学号为key 以成绩列表为value
+		HashMap<Sting,List<Integer>> stu2 = new HashMap<Sting,List<Integer>>();			
+	 		
+		创建第一个元素
+			ArrayList<Integer> score = new ArrayList<Integer>();
+			 	score.add(90);
+			 	score.add(80);
+			 	score.add(30);
+			 	score.add(60);
+			 	stu2.put("1001",score);
+			 	
+	计算每一个学号的平均成绩
+	HashMap<Sting,Integer> avgMap = new HashMap<Sting,Integer>();
+	
+	对score进行循环
+	for(String key : data.keySet()){
+		ArrayList<Integer> score = data.get(key);
+		int sum = 0;
+		for(int x : score){
+			sum += x;
+			int avg = sum/score.size();
+			avgMap.put(key,avg);
+		}
+	}
+	
+	读取学生的成绩信息文件
+	1001#数学:90,语文:80,外语:30,历史:60
+	1002#数学:70,语文:60,外语:40,历史:90
+	
+11.22
+	网络编程
+	(1)	在网络，每台机器，都有唯一一个的IP地址
+		运行cmd：
+			输入ipconfig命令， 查找当前机器的ip
+		端口号port：区分每一台机器运行的服务
+					程序需要进行通信，必须申请一个唯一的端口号
+	
+	(2)Socket: 将IP地址和port封装在一起，利用socket进行通信的时候
+			（1）根据对方的ip地址和port建立连接
+			（2）连接成功后，通过socket的输入/输出 流来进行数据发送和接收			
+		
+		1.通信客户端
+				由于接受信息readLine()属于阻塞方法，为了能使发送和接受相互对立
+				将接受和发送 设置在独立的线程中运行
+				(1)定义线程类 ReceiveThread
+		
+		2.通信服务器端
+11.28
+		GUI网络聊天客户端的实现
+	
+11.29
+		通信服务器端
+		1.接收所有客户端的连接，并记录当前连接的客户端
+		2.异步的方式接收每一个客户端发送过来的信息
+				为每一个客户端配置一个线程对象，负责接收信息
+		3.将信息广播给所有的在线客户端
+		
+	Java中，提供ServerSocket来负责接收客户端Socket的连接
+
+12.05
+	MySQL数据库的使用
+	1.安装MySQL5.5数据库
+	
+	2.安装MySQL的客户端工具navicate
+	
+	3.进入navicate
+	(1)创建与数据库的连接 connection
+	(2)创建自己的数据库jju
+		点右键 --new database
+		name:
+		character set: UTF-8
+		Collation: utf8_
+	(3)新建表   ---学生信息表 tb_student	
+		Table --->new table
+	
+	(4)录入数据
+	
+	(5)执行sql语句
+	 	Query ---> new Query
+	 	1). select * from student
+		
+		2).select * from student
+			where gender = '男'
+		
+		3).select * from student
+		   where gender = '男' AND age > 30
+		   
+	(6)编写java程序来访问MySQL数据库
+		1)新建项目dbDemo
+		2)新建Test1测试类
+			利用第三方的MySQL数据库访问jar包
+			拷贝mysql-connector-java-5.1.25-bin到工程下
+			不要放在src下
+			配置： buildPath-->config build path
+				-->library-->add jars 选中该包
+			
+			
+12.12
+    java程序 通过sql语句与数据库进行交互操作，有两大类：
+   1）查询query
+	查询数据库中的数据，获得满足条件的数据集合
+	select
+   2）更新update
+ 	对数据库中的数据造成影响
+	（增加insert，修改update，删除delete）
+	返回的是，本次操作影响到数据库中记录的条数
+
+	insert into student(sno,sname,gender,age)
+	values('010','李大嘴','男',30);   
+
+       Java程序对数据库进行sql语句访问，结果
+       1.数据库成功执行了sql语句
+	（1）没有影响数据库中任何一条记录（影响的记录条数为0）
+	（2）影响了数据库的记录（影响的记录条数>0）
+     
+  2.数据库执行sql语句产生了异常
+	（1）sql语句本身有语法错误 sql syntax error
+		
+	（2）sql语句操作后导致数据不符合数据库中数据的约束条件
+
+       数据库具体应用： 在打字测试速度程序中，加入测试结果的记录以及排行榜的展示
+    新建表 score
+		
+		
+2020.2.19
+	1.java web开发环境搭建
+		(1)下载tomcat
+		(2)运行eclipse
+		(3)在eclipse中配置使用tomcat
+	2.新建java web项目
+    (1)新建1.jsp文件 运行
+    
+2.20
+    目标: 编写一个登陆界面,用户输入用户名和密码,点击登陆,
+          进行提交(login_check.jsp)后,进行正确与否的验证如果
+          正确,则跳到主界面(index.jsp)
+            在一个限定的时间内,进入主界面,不需要再次登陆,如果之前没有
+            登陆过,用户直接进入index.jsp,则会打回到登陆界面(login.jsp)
+            
+          在首页index.jsp里面,要区分用户是从login_check.jsp成功跳转过来,
+          还是 用户直接在浏览器来吗输入index.jsp页面地址
+          
+          在login_check.jsp页面里面,当验证成功后,创建一个特定的"票",
+          进行跳转到index.jsp 
+          在index.jsp页面里面,查验是否有"票"存在,如果不存在,则跳转到login.jsp
+            
+        知识点1: jsp提供的内置对象
+          内置对象:不需要程序员在页面上通new来进行创建 系统自动提供的对象
+          1.request: 表示本次浏览器发送过来的请求
+            (1)获得本次请求传递过来的参数 getParameter(参数名);
+            
+      	 2.response: 表示服务器对本次浏览器的请求的响应
+          (1)进行页面的重定向 redirect
+          
+         3.session: 用于存放在不同页面之间进行共享的数据
+              设置: sessin: setAttriubute
+              获得: session:getAttriubute
+              有时效性     (1)用户关闭浏览器 消失 
+            (2)用户长时间没有操作页面(时间长度可以设置)
+		
+2.22
+    (1)表单中各种界面元素的使用
+          单选 多选 下拉框 文本域
+    (2)jsp 数据库的操作
+       
+       1.新建register.jsp页面,用于提供进行注册的界面
+          用户名 密码 确认密码 性别 真实姓名 所在城市 爱好 个人描述
+       
+       2.界面元素的使用说明
+        (1)单选框radio: 在同一组里 name属性值相同的只能选中一个
+        
+             设置checked属性作为默认选中 每个选项必须设置对应的value属性
+        (2)下拉框 selsct: 设置某个option中说的selected属性作为默认选中
+        
+        (3)复选框 checkbox:在同一组里name属性值相同的能选中多个
+                                    每个选项必须设置对应的value属性
+         
+         
+         jsp表单中,中文乱码的解决
+        (1)将form 提交数据的方法method 为post 默认是get
+        
+        (2)当表单提交的时候, 数据从本地浏览器发生到服务器上 
+            数据在网络上传输的时候,采用的是iso的编码,在接收数的页面,
+            需要进行编码的转换(还原成UTF-8)
+            
+            
+         多选框参数的获取
+              多选框提交的时候，用户选择了几个，传递数据格式为:
+              参数名=数值1&参数名=数值2&参数名=数值....
+              通过getParameter(参数名);只能获得第一个数组
+		
+	
+2.26
+    目标: 将表单提交到用户注册数据,写入到数据库中
+    
+    1.数据库表设计的时候一般给每个表设置的一个唯一值的id
+    字段,自增.主键
+    自增:将插入记录的试试 字段里面的值有数据库系统本身来
+    负责管理(根据上次使用过的最大值+1)不需要程序员在程序里面进行设置,
+    确保唯一性
+			
+		2.java只提供一套通用的对数据库访问的类库(JDBC),不提供针对
+		特定MySQL数据库的访问需求使用第三方的jar包	
+        (1)将需要使用的java-mysql的jar包拷贝到web-inf/lib目录下
+        (2)在jsp文件里面,引入sql包
+		（3）连接数据库后，进行数据插入的时候，数据默认采用的不是UTF-8编码，会导致写入到库里面的中文出现乱码
+	---在数据库连接的时候，设置采用UTF-8编码 
+
+     	 当表设计的时候，如果有字段设置为不允许为空（allow null），意味着在插入数据到该表中的时候，
+     	 必须对不允许为空的字段填写内容，否则sql语句执行会出现异常（SQLException）
+      	特例：如果该字段设置为auto increment，则不需要在sql语句里面设置内容，由数据库本身决定新增记录的值。
+
+		      对数据库的操作，设计专门的工具类DBUtil来实现，对外提供查询和更新两个操作
+		      在工程的java resource/src下，创建类DBUtil（放在包cn.jju.b1833eshop）
+		     使用DBUtil来编写显示所有用户的页面user_list_jsp
+  					
+ 
+3.02 数据的删除
+	    核心:执行delete sql语句
+	    
+	    对删除,当用户鼠标点击不同的连接地址,传递唯一去分改行数据的参数对应的页面
+	    在数据表中,一般用id作为位移区分数据的字段
+	    User_delete.jsp?id = xxx(xxx为当前选定的用户id)
+	    
+	    修改: user_edit.jsp
+	        界面主体内容和注册界面一样,需要将要修改的user已经录入的数据,显示处理
+	        
+        
+              在html标签来吗.需要使用jsp代码中定义的变量.通过<%= 变量名%>来使用`变量
+    
+3.4
+        信息修改的时候，
+     （1）对于单选框，某个单选框是否被选中 在<input type="radio">标签里面是
+        否带上checked属性，需要根据当前信息的某个属性值是否与该单选框的value值相等
+     （2）对于下拉框select某个选项是否被选中，在<option>标签里面，是否带上selected属性，
+     	根据当前信息的某个属性值与该选项对应的value值是否相等
+     （3）对于复选框，某个单选框是否被选中 在<input type="checkbox">标签里面是否带上checked属性，
+     	需要根据当前信息的某个属性值是否包含与该复选框的value值
+     
+  (4)为了在edit_xx_do.jsp页面里面,设置正确的sql语句
+    	 进行有条件的修改 必须获得要修改信息的id作为条件
+     	Update 表面 set 字段1 = xxx  where id = xxx;
+   	  在edit.jsp页面来吗的表单form中,额外增加一个输入框用于存放当前的用户id,
+   	  而这个输入框没必要在界面上显示 所以使用隐藏框 hidden
+  					
+3.5
+	商品信息的管理  
+	1.相关数据库表
+		(1)商品分类表tb_prodict	(2)商品信息表					
+		其中商品信息表中的type_id作为外键,来自于商品分类表id
+			设计商品信息表是,将type_id作为外键foreing key
+			约束: 录入到tb_product表中的type_id字段的值
+			必须是 在tb_product_type表中id的值(保证数据的有效性)
+			在tb_product_type表中,已经建立外键约束的数据不能删除
+			
+	2.功能点
+		创建一个product_list.jsp文件
+			在现实商品信息的时候,将外键关联的商品分类信息也显示出来
+			联合tb_product,tu_product_type进行查询,实现:在展示
+			商品信息的时候,显示商品分类名称
+			Select  tb_product.*,  tb_product_type.type_name
+   			From    tb_product   inner  join tb_product_type
+   			On      tb_product.type_id   =  tb_product_type.id
+   		(1)商品的录入界面product_add.jsp
+   			商品分类下拉框<select>中包含的选项，
+   			是从数据库中tb_product_type中读取后加载进去 	
+			
+3.10
+		(1)商品的保存 ---文件的上传	
+			表单中 除了文本信息外,还有文件(图片,doc,等等)二进制信息
+			需要在form标签里面进行设置
+			enctype="multipart/form-data"
+			
+			创建product_add_do.jsp页面,将表单提交过来的数据进行操作
+			利用smartupload工具来实现文件上传
+			创建upload目录 用于存放上传过来的文件
+			在另存文件的时候一般使用当前时间的毫秒数来重命名文件 避免出现
+			文件名重复的情况
+			(1)年月日时分秒 +3~4四位随机数
+			
+			!!java web程序 源代码 路径  与 经过tomcat解析 运行代码(发布代码) 
+			javaweb eclipse 默认的发布代码路径: 
+			工作区下.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps
+			
+3.11
+		购物车的实现
+		购物车Cart: 临时性存放用户选择的商品信息,当挂闭浏览器,购物车的内容就被自动清空,
+		用户可以不同页面之间浏览.数据必须一直存在,--session来保存共享数据
+		
+		用户选择一件商品到购物车中,如果该商品不存在,则将该商品加入购物车,设置数量为1
+		如果语句存在,则不再新增而是数量++,金额相应增加
+		
+		购物车的结构: 
+			1.购物车里商品条目CartItem
+				id,productname,saleprice,saleNumber,saleMoney
+			2.购物车Cart
+				存放商品条目的动态数组:ArrayList<CartItem> items;
+				商品总数量:Int totaINumber;
+				总价:Int totalMoney;
+				
+3.16
+	订单的提交		
+	涉及两个数据库表
+	1.订单表:tb_order
+		(1)id
+		(2)order_on:订单号唯一 一定的生成规则 
+			4魏年+2位月+2为日+时分秒+n位流水号
+		(3)user_id:购买者的用户id 外键 关联tb_user表中的id
+		(4)total_number,total_money:总数量 总金额
+		(5)order_date: 订单提交时间(当前时间)
+		(6)status:订单的状态(提交 .付款 发货 确认收货 取消....)
+		(7)receivor_name:收货人
+		(8)receivor_phone: 联系电话
+		(9)address:收货地址
+	2.订单详请表tb_order_item
+	(1)id
+	(2)order_id:所在订单表id,外键 关联tb_order表中的id
+	(3)product_id:所在商品表id,外键 关联tb_product表中的id
+
+3.18
+	加入数据到数据库表的时候,获得自增id字段的值
+	利用statement对象调用executeUpdate(sql,返回记录的id)
+	
+3.19
+	分页的实现
+		按照设定的每一页数据的大小(page_size).根据用户当前选择的页号(page_no),
+		从数据库表,提取该页面的数据
+		问题的关键:根据页号和页的大小,找出当前页所包含记录的位置(起始位置)
+		Select * from xxx where xxxx
+		limit 起始位置(从0开是算),数量
+		
+		例子: page_size:10
+			 page_no:3
+		limit 20,10
+		第一页 0,9
+		第二页 10,19
+		第三页 20,29
+		
+		一般化: select * from tb_order
+			limit (page_on-1)*page_size,page_size
+		总记录数 total_record
+		select count(*) from xxx
+		
+		总页数  total_page = total_record / page_size 
+			if判断
+			if(total_record % page_size == 0){//记录数是显示条目的整数倍
+				total_page = total_record / page_size 
+			}
+			else{//记录数不是显示条目的整数倍
+				total_page = total_record / page_size + 1
+			}
+	
+			三目运算符
+			total_page = total_record / page_size 
+						+ (total_record % page_size==0? 1:0)
+			
+
+3.23
+	前端 js (javascript)脚本语言		
+		是一种可以嵌入在html页面,被浏览器所识别的一种语言
+		java的基本语法为基础的脚本语言 
+		(1)不需要编译.当页面加载的时候,由浏览器临时解析
+		(2)弱类型的语言 没有数据类型检测 变量定义 var 变量名;
+			由变量的值类型决定数据类型
+		(3)js语句,包含在<script></script>标签里
+		(4)方法的定义
+		关键字function 方法名(){
+		
+		}
+		不需要返回类型的声明 方法执行的时候 return什么类型就是什么类型
+		如果方法带参数,也不许需要进行参数类型的声明,只需要带上参数名
+		function f(x,y,z){
+		}
+		
+	JavaScript页面操作
+		js定义了一组内置对象来对页面进行控制
+			1.window对象:表示当前页面所在窗口
+				alert():弹出提示框
+				confirm():弹出确认框
+					对于执行某个操作前,用户进行确认,如果用户选择"yes"就返回true
+					选择"no"返回false
+			2.document对象:表示页面窗口中间的内容部分
+				getElementById: 通过标签的id属性获得该标签的对象
+			在html表签中,对定义的界面元素,id属性唯一 ,name属性可以相同
+			3.表单提交机制
+			当用户提交submit按钮以后,触发form对象的onsubmit事件,
+			如果onsubmit返回true,则表单进一步提交,如果返回false,则表单不提交
+			
+3.25
+	js使用实例
+	----复选框的控制 与下拉框联动			
+	1.复选框全选与全不选
+	2.下拉框联动 	
+		两个下拉框，用户选择第一个下拉框的选项后，第二个下拉框的候选选项随之改变
+	
+	jquery的使用
+		一.界面元素对象的选择
+			1.根据id选择 	$("#id值")
+				获得输入框的值 var x = $("#id值").val()
+				设置输入框的值$("#id值").val(值);
+			2.根据标签		$("标签名")
+			3.根据class来选择 $(".class")
+			
+4.13
+	Ajax前端访问  					
+  	引入:
+  		非ajax方式:表单进行提交后,页面整体跳转到处理页面根据处理结果,
+  		有可能重新回到起始页面,起始页面的内容被全部刷新(清空)
+ 
+4.15 		
+  	利用MVC模式进行分层设计
+  		根据程序的功能,将程序的结构进行分工.分成控制器,模式,视图三个部分
+  		(1)控制器接受客户的输入(请求),按照业务处理逻辑,调用不同的模式
+  		model来完成数据的存取,将数据交个视图进行展示	,通过分层设计,
+  		可以极大的在需求变化后,减少代码的修改		
+  					
+  	1.Servlet的使用
+  		在javaweb中,一般使用servlet做为控制器来接收用户的请求
+  		(1)定义类 继承 HttpServlet
+  		(2)重写doGet()方法doPost()方法
+  		(3)将Servlet映射成url地址供客户访问				
+  		
+  	2.model(模式)的使用
+  		(1)不同的数据定义专门的数据操作类(xxxDAO)来实现该类数据的(增、删、改、查)
+  						
+  		(2)不同的数据,定义专门的实体类(Pojo)进行描述,实体类的属性和数据库表的字段对应
+  			将数据从数据库读出后,转换成实体类,断开与数据库的连接,实体类对象可以
+  			在表示层进行展示
+  			
+  		(3)jsp显示页面,利用jstl标签来显示数据
+ 
+4.16
+		利用JSTl标签库,将在jsp页面上的动态代码<%%>去掉
+		利用标签的方式来对数据进行展示
+		
+4.17
+		对于采用MVC模式进行编程的时候,如果视图文件(jsp)需要
+		进行动态数据的展示(数据是由控制器分发过来)的时候,在
+		设置跳转的时候,一定不能直接访问jsp页面,而必须经过控制器
+		来分发(超链的地址,必须seervlet对应的url)		
+		
+		对于系统中每一种信息,都涉及到(增加,删除,修改,查询)四种操作
+		没有必要为每种操作都定义一个Servlet,而是公用一个Servlet,
+		通过传递不同的参数action来调用不同的方法
+
+4.22 
+		综合使用 servlet mvc + jstl　+ jquery ajax实现完整的
+		购物车的操作
+		
+		流程:用户点击 加入购物车 -->CartServlet:加入商品到购物车 -->mycart.jsp
+  					
+4.26					
+  		JavaWeb编程之高级技术 --SSM框架篇	
+  		SpringBoot (最新)
+  		SSM : Spring + SpringMVC + Mybatis (流行)
+  		SSH : Struts + Spring + Hibernate (过时 这种组合框架不流行)
+  		1.javaweb 菜鸟入门级模式: jsp + servlet +javabean
+  		2.javaweb 中级: jsp + Spring + SpringMVC + Mybatis	
+  		
+  		SpringMVC:提供比servlet更方便的控制访问,可以将某个url映射到
+  		某个控制类(Controller)的某个方法
+  		Mybateis: 提供实体对象 和数据可记录之间的转换只需要进行简单的配置
+  		在程序中不需要编写任何繁琐的代码就能实现将实体对象保存到数据库中,作为
+  		一条记录,也可以将数据库中的记录转换成实体对象
+  		
+  		1.SpringMVC的使用
+  			1. 将SSM的jar包拷贝到WEB-INF/lib下
+  			2.将SpringMVC运行所需要的主配置文件Springmvc.xml拷贝
+  			带项目中 - config.springmvc
+  			3.修改项目的web_info/web.xml文件
+  				配置浏览器对本项目的所有url的访问,都由Springmvc
+  				接管(SpringMVC作为项目的主控制器)
+  			4.编写自定义的控制器(Controller)类 -- 映射某个url
+  				(1)创建包cn.jju.b1833.controller
+  				(2)定义User实体相关操作的控制器类UserController
+  				(3)定义User实体类 放到 cn.jju.pojo
+  				(4)在SpringMVC中注册编程的Controller
+  					<context:component-scan base-package="cn.jju.b1833.controller">
+
+4.27
+		MyBatis实现"实体对象"与"数据库记录"的转换,简化代码的编写
+			1.定义UserDao 接口
+	  		2.创建UserDao的mybatis映射文件UserDao.xml
+  			3.创建Mybatis的主配置文件mybatis-congif.xml
+  			4.在mybatis-config.xml里面,注册UserDao
+  		
+4.28
+		SpringMVC对表单数据的处理,将表单中你的数据,自动转换为实体对象,保证
+		表单中的中各输入框name属性 和实体的变量名一致	
+  		
+5.6
+	SSM 商品信息的录入(带照片上传)
+	1.商品新增链接地址 指向 ProductController的goAdd
+	url,goAdd对应的方法里面,获取所有的商品分类信息,在分发给
+	add.jsp页面
+	
+	2.定义与商品分类相关的实体 ProductType 以及Dao类 ProductDao
+	  ProductTypeDao.xml mybatis映射文件
+	
+	3.新建product/add.jsp页面
+		表单中输入框的名字   = 实体的属性名				
+  	4.在ProductController定义product/save url的处理	
+ 
+5.7
+	商品多级分类的实现
+	
+	信息的分级层次
+	1.固定级别(不超过2个)
+		设计两个分类表  
+			一级分类表
+				Id 分类名称			
+			二级分类表
+  				Id 分类名称 上级分类Id(parentId)
+  	
+  	2.不固定分级(无线分级)
+  		采用一个表来存放分级信息
+  			Id 分类名称 上级分类Id(parentId)
+  	用parentId为0  表示 一级类
+  	(1)在界面上先显示一级分类
+  		getSubType(0)
+  	(2)在界面上 二级分类 ,随用户选择的一级分类
+  	
+  	补充:SpringMVC中的Controller接受到访问后,取数据,
+  	只返回(json格式)不做跳转，浏览器的地址保持不变
+  	
+  	Ajax 技术实现 前端界面的局部刷新
+
+5.9
+	SpringMVC图片上传
+	
+	课程最后综合训练
+		Html + js +jsp + servlet +JsTl 
+		+ ajax + mybatis + Spring mvc
+		实现比较完整的在线购物平台
+		
+		一.前端客户
+		 1.首页的展示
+		 2.购物车
+		 3.订单
+		 4.注册
+		 5.登陆
+		 6.地址管理
+		 7.商品详情
+		 8.推荐
+		 	(1)浏览某个商品的人 同时还会浏览的其他商品
+		 	(2)购买该商品的人,同时还会购买的其他商品
+		 9.商品的评论(自行完成)	
+		二.后端管理
+		 1.商品分类管理
+		 2.商品管理
+		 3.用户管理
+		 4.订单管理
+		 
+		 在线购物平台项目架构的搭建
+		1.创建项目myshop
+		2.项目的目录结构
+			src
+			  --cn.jju.myeshop.pojo	    --实体类
+			  --cn.jju.myeshop.dao	    --数据库的操作
+			  --cn.jju.myeshop.service    --业务层
+			  --cn.jju.myeshop.controller --控制层
+				用户的请求(数据)url-->controller-->service-->
+				dao(多个)
+			  --cn.jju.myeshop.util --工具类
+			  配置文件
+			  --config
+			  	--mybatis
+			  		mybatis-config.xml
+			  		--mapper
+			  			XXXdao.xml
+			  	--springmvc
+			Webconent
+				--css    样式文件目录
+				--js	 js脚本文件目录
+				--images 图片文件目录
+				--pages  jsp/html文件目录
+				 页面上所编写的js脚本,全部放到js目录
+
+5.14
+	1. 首页中顶部	一级分类的展示
+	Controller分发给index.jsp页面的数据,为包含
+	一级分类列表
+	2. 首页中底部 	二级分类展示
+	Controller分发给index.jsp页面的数据,为包含
+	一级分类列表(每个一级分类还包含二级分类)
+	(1)修改ProductType实体类,增加属性
+		List<ProductType> subTypeList
+	(2)dao在获取一级分类的时候,同时将所有一级分类所包含
+	的二级分类数据也取出来
+
+5.18
+	商品列表的展示
+	1.定义商品实体对象Product
+	2.定义商品数据库操作类ProductDao
+	3.定义ProductDao.xml映射文件
+		在mybatis-config.xml中注册
+	
+	在点击某个分类,显示该分类包含的商品列表
+	(1)如果该分类没有子类,则只显示改分类的商品
+	(2)如果分类有子类,则显示该分类以及下属子类的商品
+		select * from tb_product
+		where type_id in(
+			select id from tb_product_type
+			where parent_id = xxx)
+	综合(1)(2)
+		select * from tb_product
+		where type_id = xxx 
+		Or type_id in(
+			select id from tb_product_type
+			where parent_id = xxx)
+			
+5.19
+	商品详情的显示
+	进行个性推荐,"浏览过该商品的人同时浏览的其他商品列表"
+	记录浏览记录
+	登录,注册
+	
+	为了能在表单提交的时候,将表单的内容自动赋值给实体对象,提交到Controller
+	必须 宝珠表单中各个输入框的name值与实体值一致
+
+
+
+
+
+
+
+	  		
